@@ -21,3 +21,18 @@
 | go mod tidy     | 增加缺少的包，删除无用的包                     |
 | go mod download | 下载依赖包到本地（默认为 GOPATH/pkg/mod 目录） |
 
+# bug相关
+
+## [解决*go*.*mod文件*中require内依赖全部飘红](https://blog.51cto.com/sdwml/5789358)
+
+> 明明执行了**go mod vendor**但是项目却还是飘红
+
+![image-20230721180811490](https://yaoliuyang-blog-images.oss-cn-beijing.aliyuncs.com/blogImages/image-20230721180811490.png)
+
+**解决方案**
+
+> GoLand 点击左上角： GoLand -> Preferences -> Go -> Go Modules  
+>
+> 勾选后点击确认即可
+
+![image-20230721181110341](https://yaoliuyang-blog-images.oss-cn-beijing.aliyuncs.com/blogImages/image-20230721181110341.png)
