@@ -126,6 +126,8 @@ func main() {
 >
 > DSN的格式通常为：
 >
+> > MySQL DSN的全称是数据源名称（Data Source Name），它是一种标识数据源的名称，可以MySQL DSN的全称是数据源名称（Data Source Name），它是一种标识数据源的名称，可以方便地连接到数据库。更具体来说，MySQL的DSN字符串格式示例为：`"<username>:<password>@tcp(<hostname>:<port>)/<database_name>?charset=utf8mb4&parseTime=True&loc=Local"`。其中，`<username>`是MySQL服务器的用户名，`<password>`是MySQL服务器的密码，`<hostname>`是MySQL服务器的主机名或IP地址，`<port>`是MySQL服务器的端口号，`<database_name>`是要连接的数据库名称。
+>
 > ```shell
 > username:password@protocol(address)/dbname?param=value
 > ```
