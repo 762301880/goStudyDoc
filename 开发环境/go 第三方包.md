@@ -120,3 +120,53 @@ func main() {
 
 ```
 
+**添加地址&驱动**
+
+> 在Go中，`github.com/go-sql-driver/mysql`包是一个MySQL数据库驱动，它主要用于连接MySQL数据库和执行SQL操作。该包的主要作用是通过DSN（数据源名称）来指定数据库的连接信息，包括数据库的IP地址、端口、用户名、密码等。
+>
+> DSN的格式通常为：
+>
+> ```shell
+> username:password@protocol(address)/dbname?param=value
+> ```
+>
+> 其中，`address`部分就包括了IP地址。所以，你可以通过修改DSN中的`address`部分来更改MySQL数据库的IP地址。下面是一个简单的示例：
+
+```go
+package main
+
+import (
+	"database/sql"
+	"fmt"
+	"log"
+
+	_ "github.com/go-sql-driver/mysql"
+)
+
+const (
+	dbDriver = "mysql"
+	dbUser   = "your_username"
+	dbPass   = "your_password"
+	dbName   = "your_database_name"
+	dbHost   = "new_ip_address" // 修改为新的IP地址
+	dbPort   = "3306"            // 修改为新的端口号
+)
+
+func main() {
+	// 构建新的DSN
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPass, dbHost, dbPort, dbName)
+
+	// 连接数据库
+	db, err := sql.Open(dbDriver, dsn)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	// 其他数据库操作...
+}
+```
+
+> 在上面的示例中，你需要将`new_ip_address`替换为你想连接的新MySQL数据库的IP地址，并根据需要修改端口号。然后，通过构建新的DSN来连接数据库。
+>
+> 请注意，这只是一个示例，实际应用中你可能还需要根据需要进行其他配置项的调整。在修改连接信息时，确保考虑到网络安全性和访问权限等因素。
