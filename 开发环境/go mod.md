@@ -27,7 +27,7 @@
 
 > 明明执行了**go mod vendor**但是项目却还是飘红
 
-![image-20230721180811490](https://yaoliuyang-blog-images.oss-cn-beijing.aliyuncs.com/blogImages/image-20230721180811490.png)
+![image-20230721180811490](https://gitee.com/yao_liu_yang/blogImages/raw/master/blogImages/image-20230721180811490.png)
 
 **解决方案**
 
@@ -35,4 +35,4 @@
 >
 > 勾选后点击确认即可
 
-![image-20230721181110341](https://yaoliuyang-blog-images.oss-cn-beijing.aliyuncs.com/blogImages/image-20230721181110341.png)
+![image-20230721181110341](https://gitee.com/yao_liu_yang/blogImages/raw/master/blogImages/image-20230721181110341.png)
