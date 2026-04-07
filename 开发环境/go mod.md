@@ -3,6 +3,7 @@
 | 名称                   | 地址                                                         |
 | ---------------------- | ------------------------------------------------------------ |
 | go modules详解相关命令 | [link](https://learnku.com/courses/go-video/2022/006-go-modules-related-commands/11454) |
+| go mod  官方文档       | [link](https://golang.ac.cn/doc/modules/gomod-ref)           |
 
 
 
@@ -10,16 +11,86 @@
 
 ### Go Modules 命令：
 
-| 命令            | 作用                                           |
-| :-------------- | ---------------------------------------------- |
-| go mod init     | 初始化当前文件夹，创建 go.mod 文件             |
-| go mod why      | 解释为什么需要依赖                             |
-| go mod edit     | 编辑 go.mod 文件                               |
-| go mod vendor   | 将依赖复制到 vendor 目录下                     |
-| go mod verify   | 校验依赖                                       |
-| go mod graph    | 打印模块依赖图                                 |
-| go mod tidy     | 增加缺少的包，删除无用的包                     |
-| go mod download | 下载依赖包到本地（默认为 GOPATH/pkg/mod 目录） |
+| 命令            | 作用                                                         |
+| :-------------- | ------------------------------------------------------------ |
+| go mod init     | 初始化当前文件夹，创建 go.mod 文件     例如 go mod init  go_study  会在 go_study目录下创建go.mod文件 |
+| go mod why      | 解释为什么需要依赖                                           |
+| go mod edit     | 编辑 go.mod 文件                                             |
+| go mod vendor   | 将依赖复制到 vendor 目录下                                   |
+| go mod verify   | 校验依赖                                                     |
+| go mod graph    | 打印模块依赖图                                               |
+| go mod tidy     | 增加缺少的包，删除无用的包                                   |
+| go mod download | 下载依赖包到本地（默认为 GOPATH/pkg/mod 目录）               |
+
+## go mod是干嘛的
+
+### **Go mod 就是 Go 语言的「依赖管理工具」**
+
+你可以把它理解成 **前端的 npm、Java 的 Maven、Python 的 pip**。
+
+它只干 3 件核心事：
+
+### 1. 管理你的项目依赖（第三方包）
+
+你写 Go 代码经常要引用别人写好的包，比如：
+
+- 数据库驱动
+- Web 框架（Gin、Echo）
+- 工具库
+
+**go mod 会自动帮你：**
+
+- 下载这些包
+- 记录它们的版本
+- 保证所有人运行代码时，用的都是同一个版本
+
+### 2. 生成 2 个关键文件
+
+运行 `go mod init` 后会生成：
+
+### 📄 `go.mod`
+
+- 记录**你的项目叫什么**
+- 记录**项目依赖哪些包**
+- 记录**依赖的版本**
+
+### 📄 `go.sum`
+
+- 校验文件，保证依赖没被篡改
+- 不用手动改，Go 自动维护
+
+### 3. 让项目**不依赖 GOPATH**（最重要的进步）
+
+在没有 go mod 之前，所有 Go 项目**必须放在固定文件夹 GOPATH 里**，非常麻烦。
+
+**有了 go mod：**
+
+👉 项目可以放在电脑**任何位置**
+
+👉 一个项目一个依赖环境，互不干扰
+
+### 超通俗比喻
+
+**go mod = 你的 Go 项目的「户口本 + 购物清单」**
+
+- **户口本**：告诉 Go 这是一个独立项目
+- **购物清单**：记录项目需要哪些第三方工具包
+
+### 你现在只需要记住这 4 条命令
+
+```bash
+# 1. 创建项目（必须加名字）
+go mod init 项目名
+
+# 2. 自动下载/整理所有依赖
+go mod tidy
+
+# 3. 安装某个包
+go get 包地址
+
+# 4. 运行代码
+go run main.go
+```
 
 # bug相关
 
