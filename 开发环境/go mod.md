@@ -37,8 +37,6 @@
 
 ![image-20230721181110341](https://gitee.com/yao_liu_yang/blogImages/raw/master/blogImages/image-20230721181110341.png)
 
-
-
 **go mod** 是 Go 语言从 **1.11** 版本引入、**1.16** 成为默认的官方依赖管理工具，核心是用 `go.mod` 文件定义项目模块与依赖，实现可复现构建与版本管理。
 
 ### 📄 核心作用与解决的痛点
