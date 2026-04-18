@@ -172,3 +172,144 @@ func main() {
 > 在上面的示例中，你需要将`new_ip_address`替换为你想连接的新MySQL数据库的IP地址，并根据需要修改端口号。然后，通过构建新的DSN来连接数据库。
 >
 > 请注意，这只是一个示例，实际应用中你可能还需要根据需要进行其他配置项的调整。在修改连接信息时，确保考虑到网络安全性和访问权限等因素。
+
+## 定时任务
+
+###  robfig/cron
+
+**安装**
+
+```go
+go get github.com/robfig/cron/v3@v3.0.0
+```
+
+**推荐结构**
+
+```shell
+.
+├── main.go
+├── cron/
+│   ├── cron.go        // 初始化 cron
+│   └── jobs.go        // 所有定时任务
+└── router/
+    └── router.go
+```
+
+**cron 初始化（cron/cron.go）**
+
+```go
+package cron
+
+import (
+	"github.com/robfig/cron/v3"
+)
+
+// InitCron 初始化 cron 调度器
+func InitCron() *cron.Cron {
+	// 开启秒级 + 防止任务重叠执行
+	c := cron.New(
+		cron.WithSeconds(),
+		cron.WithChain(
+			cron.SkipIfStillRunning(cron.DefaultLogger), // 上一个没执行完就跳过
+		),
+	)
+
+	// 注册所有任务
+	RegisterJobs(c)
+
+	// 启动
+	c.Start()
+
+	return c
+}
+```
+
+**任务定义（cron/jobs.go）**
+
+```go
+package cron
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/robfig/cron/v3"
+)
+
+// RegisterJobs 注册所有定时任务
+func RegisterJobs(c *cron.Cron) {
+
+	// 👉 每5秒
+	_, _ = c.AddFunc("*/5 * * * * *", JobEvery5Sec)
+
+	// 👉 每分钟
+	_, _ = c.AddFunc("0 * * * * *", JobEveryMinute)
+
+	// 👉 每天凌晨2点
+	_, _ = c.AddFunc("0 0 2 * * *", JobDaily)
+}
+
+// ================= 具体任务 =================
+
+// JobEvery5Sec 每5秒执行
+func JobEvery5Sec() {
+	fmt.Println("[cron] 每5秒任务:", time.Now())
+}
+
+// JobEveryMinute 每分钟执行
+func JobEveryMinute() {
+	fmt.Println("[cron] 每分钟任务")
+}
+
+// JobDaily 每天凌晨任务
+func JobDaily() {
+	fmt.Println("[cron] 每日任务")
+}
+```
+
+**Gin 路由（router/router.go）**
+
+```go
+package router
+
+import "github.com/gin-gonic/gin"
+
+func InitRouter() *gin.Engine {
+	r := gin.Default()
+
+	r.GET("/", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"msg": "Gin + cron running",
+		})
+	})
+
+	return r
+}
+```
+
+**主入口（main.go）**
+
+```go
+package main
+
+import (
+	"your_project/cron"
+	"your_project/router"
+)
+
+func main() {
+	// 1️⃣ 启动定时任务
+	cron.InitCron()
+
+	// 2️⃣ 启动 Gin
+	r := router.InitRouter()
+	r.Run(":8080")
+}
+```
+
+以后你要加任务，只改：
+
+```go
+RegisterJobs()
+```
+
