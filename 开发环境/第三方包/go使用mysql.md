@@ -1,3 +1,11 @@
+##  GORM文档参考
+
+| 名称         | 地址                                          |
+| ------------ | --------------------------------------------- |
+| GORM中文文档 | [link](https://gorm.io/zh_CN/docs/index.html) |
+
+
+
 ## 主流企业方案
 
 通常会用：
@@ -98,6 +106,24 @@ func GetUsers() ([]model.User, error) {
 	return users, err
 }
 
+func CreateUser(user *model.User) error {
+	err := config.DB.Create(user).Error
+	return err
+}
+
+func GetUserById(id int) (*model.User, error) {
+	var user model.User
+	err := config.DB.First(&user, id).Error
+	return &user, err
+}
+func UpdateUser(user *model.User) error {
+	err := config.DB.Save(user).Error
+	return err
+}
+func DeleteUser(id int) error {
+	err := config.DB.Delete(&model.User{}, id).Error
+	return err
+}
 ```
 
 ### Service 层（业务逻辑）
