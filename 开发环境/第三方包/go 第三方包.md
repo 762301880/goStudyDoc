@@ -313,3 +313,152 @@ func main() {
 RegisterJobs()
 ```
 
+## go读取.env
+
+> https://pkg.go.dev/github.com/joho/godotenv
+
+### 安装扩展
+
+```go
+go get github.com/joho/godotenv
+```
+
+### 使用
+
+**示例.env**
+
+```go
+DB_HOST=localhost
+DB_PORT=3306
+```
+
+**调用示例**
+
+```go
+package main
+
+import (
+    "fmt"
+    "os"
+
+    "github.com/joho/godotenv"
+)
+
+func main() {
+    // 加载 .env 文件
+    err := godotenv.Load()
+    if err != nil {
+        fmt.Println("Error loading .env file")
+    }
+
+    // 读取变量
+    dbHost := os.Getenv("DB_HOST")
+    fmt.Println("DB_HOST:", dbHost)
+}
+```
+
+### 封装
+
+**对于配置目录**
+
+```shell
+project/
+  config/
+    env.go
+  main.go
+```
+
+**核心封装 `env.go`**
+
+```go
+package config
+
+import (
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
+)
+
+func InitEnv() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("⚠️ 未找到 .env 文件，使用系统环境变量")
+	}
+}
+
+// 通用获取方法
+func Get(key string) string {
+	return os.Getenv(key)
+}
+```
+
+**使用方式**
+
+```go
+package main
+
+import (
+	"fmt"
+	"your_project/config"
+)
+
+func main() {
+	config.InitEnv() //必须先初始化 env配置
+
+	dbHost := config.Get("DB_HOST")
+	fmt.Println("DB_HOST:", dbHost)
+}
+```
+
+### 进阶配置
+
+**强类型配置**
+
+```go
+package config
+
+import (
+	"log"
+
+	"github.com/joho/godotenv"
+)
+
+type Config struct {
+	DBHost string
+	DBPort string
+}
+
+var Cfg Config
+
+func Init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("⚠️ 未找到 .env")
+	}
+
+	Cfg = Config{
+		DBHost: getEnv("DB_HOST", "localhost"),
+		DBPort: getEnv("DB_PORT", "3306"),
+	}
+}
+```
+
+```go
+func getEnv(key, defaultVal string) string {
+	val := os.Getenv(key)
+	if val == "" {
+		return defaultVal
+	}
+	return val
+}
+```
+
+**使用**
+
+```go
+config.Init()
+
+fmt.Println(config.Cfg.DBHost)	
+```
+
