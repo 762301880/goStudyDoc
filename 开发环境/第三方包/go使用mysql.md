@@ -1,8 +1,9 @@
 ##  GORM文档参考
 
-| 名称         | 地址                                          |
-| ------------ | --------------------------------------------- |
-| GORM中文文档 | [link](https://gorm.io/zh_CN/docs/index.html) |
+| 名称                           | 地址                                          |
+| ------------------------------ | --------------------------------------------- |
+| GORM中文文档                   | [link](https://gorm.io/zh_CN/docs/index.html) |
+| laravel_学院 **GORM 中文文档** | [link](https://learnku.com/docs/gorm/v2)      |
 
 
 
