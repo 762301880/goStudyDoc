@@ -1,4 +1,4 @@
-## linux安装test1
+## linux安装test2
 
 ### 请自行官网下载安装包
 
