@@ -472,6 +472,10 @@ fmt.Println(config.Cfg.DBHost)
 
 ###  Air（Go 热加载神器）
 
+最低需要go版本
+
+**最低需要go 1.22版本**
+
 **安装**
 
 ```go
