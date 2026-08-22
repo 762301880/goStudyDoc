@@ -153,3 +153,15 @@ exclude github.com/xxx v1.0.0  // 排除指定版本依赖
 - 新项目用 `go mod init 模块路径` 初始化，模块路径建议用代码仓库地址（如 `github.com/用户名/项目名`）。
 - 提交代码时务必包含 `go.mod` 与 `go.sum`，确保他人构建一致。
 - 依赖冲突用 `replace` 或 `exclude` 调整；升级依赖用 `go get -u`。
+
+## import依赖保存代码后import依赖自动丢失
+
+那是因为 import会自动读取vendor包中的依赖 如果只是执行了**go mod tidy** 还需要执行`go mod vendor`
+
+### 现象解释
+
+执行完 `go mod vendor` 之后 import 不再自动丢失，**不是 vendor 设计上专门用来解决这个问题，是一个副作用现象**。
+
+1. 生成 `vendor/` + `vendor/modules.txt` 之后，gopls 会**优先读取项目本地 vendor 目录内的源码做静态分析**，不再只依赖全局 `GOMODCACHE` 缓存做索引。
+2. 之前的情况：依赖只存在全局模块缓存，gopls 因为**包名歧义 + 索引缓存异常**，解析符号失败，判定 import 未使用，保存就删掉。
+3. 当 vendor 目录存在，gopls 直接读取本地磁盘上完整的 redis 源码包，符号解析成功 → 识别到代码确实在使用这个 import → organize‑imports 就不会删除这一行 import。
